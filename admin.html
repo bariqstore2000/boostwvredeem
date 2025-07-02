@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Generate Code</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: #1a001f;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin: 20px 0 10px;
+    }
+    form {
+      margin-top: 40px;
+    }
+    input {
+      padding: 12px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 250px;
+    }
+    button {
+      padding: 12px 24px;
+      background-color: #ff66cc;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #90ee90;
+    }
+  </style>
+</head>
+<body>
+  <h1>Generate Boost Code (Admin Only)</h1>
+
+  <form id="adminForm">
+    <input type="password" id="password" placeholder="Admin Password" required><br>
+    <input type="text" id="filename" placeholder="Tokens file (e.g. boost1.txt)" required><br>
+    <button type="submit">Generate Code</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('adminForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value.trim();
+      const filename = document.getElementById('filename').value.trim();
+
+      const res = await fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, filename })
+      });
+
+      const data = await res.json();
+      document.getElementById('result').innerText = data.message;
+    };
+  </script>
+</body>
+</html>
