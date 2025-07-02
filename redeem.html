@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redeem Code - Boosts Wave</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: #1a001f;
+      color: white;
+      text-align: center;
+    }
+    .banner {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .banner img {
+      width: 100%;
+      border-radius: 20px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin: 20px 0 10px;
+    }
+    form {
+      margin-top: 40px;
+    }
+    input {
+      padding: 12px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 250px;
+    }
+    button {
+      padding: 12px 24px;
+      background-color: #ff66cc;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #90ee90;
+    }
+    .back a {
+      color: #ff66cc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <img src="/images/banner.png" alt="Banner">
+  </div>
+  <h1>Redeem Your Boost Code</h1>
+
+  <form id="redeemForm">
+    <input type="text" id="code" placeholder="Enter your code" required><br>
+    <input type="text" id="invite" placeholder="Server Invite Link" required><br>
+    <button type="submit">Redeem</button>
+  </form>
+
+  <div id="result"></div>
+
+  <div class="back" style="margin-top: 30px;">
+    <a href="/admin.html">← Admin Panel</a>
+  </div>
+
+  <script>
+    document.getElementById('redeemForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('code').value.trim();
+      const invite = document.getElementById('invite').value.trim();
+
+      const res = await fetch('/redeem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, invite })
+      });
+
+      const data = await res.json();
+      document.getElementById('result').innerText = data.message;
+    };
+  </script>
+</body>
+</html>
