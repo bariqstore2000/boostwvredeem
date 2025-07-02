@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Boosts Wave</title>
@@ -40,6 +40,30 @@
       text-decoration: none;
       font-weight: bold;
     }
+    form {
+      margin-top: 40px;
+    }
+    input {
+      padding: 12px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
+      width: 250px;
+    }
+    button {
+      padding: 12px 24px;
+      background-color: #ff66cc;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #90ee90;
+    }
   </style>
 </head>
 <body>
@@ -47,10 +71,32 @@
     <img src="/images/banner.png" alt="Banner">
   </div>
   <h1>Welcome to Boosts Wave</h1>
-  <p>اCodes Redeemer</p>
+  <p>Buy Nitro Boost Codes for Discord Servers</p>
   <div class="buttons">
     <a href="/redeem.html">Redeem Code</a>
     <a href="/generate.html">Generate Code</a>
   </div>
+
+  <form id="redeemForm">
+    <input type="text" id="code" placeholder="Enter your code here" required><br>
+    <input type="text" id="invite" placeholder="Server Invite Link" required><br>
+    <button type="submit">Redeem Now</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('redeemForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('code').value;
+      const invite = document.getElementById('invite').value;
+      const res = await fetch('/redeem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, invite })
+      });
+      const data = await res.json();
+      document.getElementById('result').innerText = data.message;
+    };
+  </script>
 </body>
 </html>
